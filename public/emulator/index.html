@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <title>AetherStation Core</title>
+    <link rel="stylesheet" href="./emulator.css" />
+  </head>
+  <body>
+    <div id="shell">
+      <div id="bezel">
+        <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+        <div id="boot-panel">
+          <div id="spinner"></div>
+          <div id="status">Booting bundled PS1 core...</div>
+          <progress id="readfile_progress" max="100" value="0"></progress>
+        </div>
+      </div>
+    </div>
+
+    <div id="control"></div>
+    <input
+      type="file"
+      id="iso_opener"
+      onchange="pcsx_readfile(this)"
+      accept=".bin,.img,.iso,.mdf"
+      disabled
+      hidden
+    />
+
+    <script src="./pcsx_ui.js"></script>
+    <script src="./pcsx_ww.js"></script>
+    <script src="./bridge.js"></script>
+  </body>
+</html>
