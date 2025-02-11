@@ -12,6 +12,15 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "electron/**",
+    "package/**",
+    "public/emulator/core/**",
+    "public/emulator/pcsx_ui.js",
+    "public/emulator/pcsx_worker.js",
+    "public/emulator/pcsx_worker.wasm",
+    "public/emulator/pcsx_ww.js",
+    "public/emulator/pcsx_ww.wasm",
+    "vendor/**",
   ]),
 ]);
 
