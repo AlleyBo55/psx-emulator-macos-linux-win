@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AetherStation
 
-## Getting Started
+> *Remember the first time you heard that startup sound? The anticipation as the logo faded in, controller in hand, the whole evening ahead of you. AetherStation brings that feeling back.*
 
-First, run the development server:
+A love letter to the golden era of gaming — AetherStation is a sleek, Apple-inspired PlayStation 1 emulator shell that runs on macOS, Windows, and Linux. Built with Electron, Next.js, Tailwind CSS, and a bundled WebAssembly core, it wraps the raw power of PS1 emulation in a modern, minimal interface that feels right at home on your desktop.
+
+No setup wizards. No config files. Just drop a disc image and play.
+
+---
+
+## Features
+
+- **Cross-platform** — runs natively on macOS, Windows, and Linux via Electron
+- **Web-deployable** — static export works on Vercel, Netlify, or any static host
+- **Zero BIOS required** — uses HLE (High-Level Emulation) so no copyrighted firmware needed
+- **Drag-and-drop** — toss a `.bin`, `.img`, `.iso`, or `.mdf` onto the stage and go
+- **Persistent save data** — memory card data syncs to IndexedDB automatically, your progress survives page reloads
+- **Recent games library** — quick access to your last 6 sessions
+- **Gamepad support** — auto-detects controllers, falls back to keyboard seamlessly
+- **Fullscreen immersive mode** — one click to lose yourself in the experience
+- **Keyboard overlay** — press `P` or `O` anytime to see the control map
+- **Glass UI** — frosted panels, smooth transitions, and a design language inspired by modern macOS
+
+## Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This boots Next.js on `127.0.0.1:3000` and opens the Electron shell once the dev server is ready.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Package for Distribution
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Directory output (for testing)
+npm run pack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Full installer (.dmg, .exe, .AppImage)
+npm run dist
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Web Deployment
 
-## Deploy on Vercel
+AetherStation exports as a fully static site — no server-side runtime needed.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+# Deploy the `out/` directory to Vercel, Netlify, Cloudflare Pages, etc.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> When deploying to the web, remove the `assetPrefix` in `next.config.ts` (it's only needed for Electron's relative paths).
+
+## Controls
+
+| Action        | Keyboard    |
+|---------------|-------------|
+| Move          | Arrow keys  |
+| Cross (X)     | Z           |
+| Circle (O)    | X           |
+| Square        | S           |
+| Triangle      | D           |
+| L1 / L2       | W / E       |
+| R1 / R2       | R / T       |
+| Select / Start| C / V       |
+
+Plug in any standard gamepad and it's detected automatically.
+
+## Architecture
+
+```
+src/app/          → Next.js frontend (React 19, Tailwind CSS 4)
+electron/         → Electron main + preload scripts
+public/emulator/  → WASM emulator core + bridge layer
+vendor/pcsxjs/    → Bundled pcsxjs WebAssembly build
+scripts/          → Build-time asset copy scripts
+```
+
+The emulator runs inside an iframe. The bridge layer (`public/emulator/bridge.js`) handles communication between the React shell and the WASM core via `postMessage`. Save data is persisted to IndexedDB through Emscripten's IDBFS, synced every 5 seconds and on tab close.
+
+## Legal
+
+- The emulator itself is legal (see *Sony v. Connectix*, *Sony v. Bleem*)
+- No copyrighted BIOS or game files are included
+- Users must supply their own legally dumped PS1 disc images
+- This project is for educational and preservation purposes
+
+## Tech Stack
+
+- **Runtime**: Electron 40 + Next.js 16 + React 19
+- **Styling**: Tailwind CSS 4
+- **Emulation**: pcsxjs 0.0.5 (PCSX WebAssembly port)
+- **Build**: electron-builder for desktop packaging
+- **Export**: Static HTML via `next export` for web deployment
+
+---
+
+*Some nights, all you need is a memory card and a reason to stay up too late.*
