@@ -4,29 +4,34 @@
   const queuedFiles = [];
   let readySent = false;
 
-  // --- Persist save data (memory cards) back to IndexedDB ---
-  var syncTimer = null;
+  // --- Persist save data ---
+  // The worker now mounts IDBFS on /home/web_user/.pcsx and syncs every 5s.
+  // From the main thread we can also trigger a sync via the "sync-saves" command
+  // and sync the main-thread /cfg/ (pad config) via FS.syncfs.
 
-  function persistSaveData() {
+  function syncWorkerSaves() {
+    if (window.pcsx_worker) {
+      window.pcsx_worker.postMessage({ cmd: "sync-saves" });
+    }
+  }
+
+  function syncMainThreadFS() {
     if (typeof FS !== "undefined" && FS.syncfs) {
       FS.syncfs(false, function (err) {
-        if (err) {
-          console.warn("[bridge] save-data sync failed:", err);
-        }
+        if (err) console.warn("[bridge] cfg sync failed:", err);
       });
     }
   }
 
-  function schedulePersist() {
-    if (syncTimer) return;
-    syncTimer = setInterval(persistSaveData, 5000);
+  function persistAll() {
+    syncWorkerSaves();
+    syncMainThreadFS();
   }
 
-  // Also sync when the tab is about to close or go hidden
-  window.addEventListener("beforeunload", persistSaveData);
+  window.addEventListener("beforeunload", persistAll);
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "hidden") {
-      persistSaveData();
+      persistAll();
     }
   });
 
@@ -70,17 +75,16 @@
 
     if (!window.pcsx_worker || !opener || opener.disabled) {
       queuedFiles.push(file);
-      updateStatus(`Queued ${file.name} for launch...`);
+      updateStatus("Queued " + file.name + " for launch...");
       return;
     }
 
     opener.disabled = true;
     window.pcsx_worker.postMessage({ cmd: "loadfile", file: file });
-    updateStatus(`Loading ${file.name || "game image"}...`);
-    schedulePersist();
+    updateStatus("Loading " + (file.name || "game image") + "...");
 
     if (typeof check_controller === "function") {
-      try { check_controller(); } catch {}
+      try { check_controller(); } catch (e) {}
     }
   }
 
@@ -102,7 +106,7 @@
   }
 
   window.addEventListener("message", function (event) {
-    const data = event.data;
+    var data = event.data;
 
     if (!data || typeof data !== "object") {
       return;
@@ -148,7 +152,7 @@
         return;
       }
 
-      const key = String(event.key || "").toLowerCase();
+      var key = String(event.key || "").toLowerCase();
       if (key !== "p" && key !== "o") {
         return;
       }
