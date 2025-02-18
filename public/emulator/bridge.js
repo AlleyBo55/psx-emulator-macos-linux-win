@@ -12,6 +12,7 @@
   function syncWorkerSaves() {
     if (window.pcsx_worker) {
       window.pcsx_worker.postMessage({ cmd: "sync-saves" });
+      console.log("[bridge] save data synced to IndexedDB");
     }
   }
 
@@ -26,6 +27,7 @@
   function persistAll() {
     syncWorkerSaves();
     syncMainThreadFS();
+    sendToParent({ type: "emulator-status", status: "Save data synced." });
   }
 
   window.addEventListener("beforeunload", persistAll);
