@@ -499,7 +499,7 @@ export default function Home() {
             <p className="mt-1 text-sm text-[#6b5541]">
               {activeGame
                 ? sessionSummary.subtitle
-                : "Open a disc image or drop one onto the stage."}
+                : "Drop a disc image onto the stage to begin."}
             </p>
           </div>
 
@@ -513,12 +513,6 @@ export default function Home() {
             <span className="aether-chip hidden md:inline-flex">
               {hasGamepad ? "Controller connected" : "Keyboard active"}
             </span>
-            <ActionButton emphasis="accent" onClick={launchFromNativePicker}>
-              Open Game
-            </ActionButton>
-            <ActionButton onClick={() => browserFileInputRef.current?.click()}>
-              Import
-            </ActionButton>
           </div>
         </header>
 
@@ -536,9 +530,6 @@ export default function Home() {
 
               <div className="mt-3 grid gap-2">
                 <ActionButton emphasis="accent" onClick={launchFromNativePicker}>
-                  Open From Finder
-                </ActionButton>
-                <ActionButton onClick={() => browserFileInputRef.current?.click()}>
                   Import Disc Image
                 </ActionButton>
               </div>
@@ -666,7 +657,7 @@ export default function Home() {
                     <p className={`mt-1 text-sm ${isImmersiveMode ? "text-[#e9cdb5]/75" : "text-[#695440]"}`}>
                       {activeGame
                         ? sessionSummary.subtitle
-                        : "Open from Finder, import a file, or drag a disc image onto the stage."}
+                        : "Drag a disc image onto the stage to begin."}
                     </p>
                     <p className={`mt-1 text-xs ${isImmersiveMode ? "text-[#d9b89b]/65" : "text-[#826b56]"}`}>
                       {emulatorStatus}
@@ -772,8 +763,7 @@ export default function Home() {
                               Ready for a disc image.
                             </p>
                             <p className="mt-3 text-sm leading-6 text-[#ecd0b6]/80">
-                              Open from Finder, import a file, or drag a `.bin`, `.img`, `.iso`,
-                              or `.mdf` image onto this screen.
+                              Drag a `.bin`, `.img`, `.iso`, or `.mdf` disc image onto this screen.
                             </p>
                             <p className="mt-3 text-xs text-[#d5b494]/75">{keyboardHint}</p>
                           </div>
