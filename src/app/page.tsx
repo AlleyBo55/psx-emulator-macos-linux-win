@@ -490,7 +490,7 @@ export default function Home() {
           isImmersiveMode ? "rounded-none" : "rounded-[30px]"
         }`}
       >
-        <header className="aether-toolbar flex items-start justify-between gap-4 px-4 py-3 sm:px-5">
+        <header className="aether-toolbar flex items-start justify-between gap-4 px-4 py-3 sm:px-5" style={{ WebkitAppRegion: "drag" } as React.CSSProperties}>
           <div className="min-w-0 flex-1">
             <p className="aether-eyebrow">AetherStation</p>
             <h1 className="mt-1 truncate text-2xl font-semibold tracking-[-0.05em] text-[#20180f] sm:text-[30px]">
@@ -503,7 +503,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-end gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2" style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}>
             <span className={`aether-chip ${isFrameReady ? "aether-chip-ready" : ""}`}>
               {isFrameReady ? "Core ready" : "Booting"}
             </span>

@@ -85,6 +85,10 @@ scripts/          → Build-time asset copy scripts
 
 The emulator runs inside an iframe. The bridge layer (`public/emulator/bridge.js`) handles communication between the React shell and the WASM core via `postMessage`. Save data is persisted to IndexedDB through Emscripten's IDBFS, synced every 5 seconds and on tab close.
 
+## Where to Find Games
+
+You can browse and download PS1 disc images from [CDRomance](https://cdromance.org/psx-iso/). They maintain a large library of PS1 ISOs in formats compatible with AetherStation (`.bin`, `.iso`, `.img`, `.mdf`).
+
 ## Legal
 
 - The emulator itself is legal (see *Sony v. Connectix*, *Sony v. Bleem*)
